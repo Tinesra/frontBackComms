@@ -4,7 +4,7 @@ import { api } from "@/lib/api";
 import styles from "../page.module.css";
 
 export default function Users() {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState<string | null>(null);
 
@@ -14,10 +14,10 @@ export default function Users() {
     try {
       const result = await api("/users", {
         method: "POST",
-        json: { name, password },
+        json: { username, password },
       });
       setStatus(`Created: ${JSON.stringify(result)}`);
-      setName("");
+      setUsername("");
       setPassword("");
     } catch (err: any) {
       setStatus(`Error: ${err.message}`);
@@ -29,8 +29,8 @@ export default function Users() {
       <input className={styles.input}
         type="text"
         placeholder="Username"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
         required
       />
     <br />
