@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import Users from "./components/inputFields"; 
+import Users from "./components/inputFields";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -16,15 +16,19 @@ export default function Home() {
   }, []);
 
   return (
-    <main className={styles.main}>
-      <h1 className={styles.title}>fordemo Frontend</h1>
-      {error && <p className={styles.error}>{error}</p>}
-      <div className="preContainer">
-        <div className={styles.pre}>
-          {JSON.stringify(data, null, 2)}
-        </div>
+    <div className={styles.mainContainer}>
+      <div className={styles.page}>
+        <main className={styles.main}>
+          <h1 className={styles.title}>fordemo Frontend</h1>
+          {error && <p className={styles.error}>{error}</p>}
+          <div className="preContainer">
+            <div className={styles.pre}>
+              {JSON.stringify(data, null, 2)}
+            </div>
+          </div>
+          <Users />
+        </main>
       </div>
-      <Users />
-    </main>
+    </div>
   );
 }
