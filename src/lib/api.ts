@@ -1,16 +1,35 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL as string;
 
-type Options = RequestInit & { json?: unknown };
+type Options = RequestInit & { 
+  json?: unknown;
+  params?: Record<string, string>;
+};
 
 export async function api(path: string, opts: Options = {}) {
-  const { json, headers, ...rest } = opts;
-  const res = await fetch(`${API_BASE}${path}`, {
+  const { json, headers, params, ...rest } = opts;
+
+  let url = `${API_BASE}${path}`;
+  if (params && Object.keys(params).length > 0) {
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        searchParams.append(key, value);
+      }
+    });
+    url += `?${searchParams.toString()}`;
+  }
+
+  const body = (rest.method === 'GET' || rest.method === 'HEAD') 
+    ? undefined 
+    : json ? JSON.stringify(json) : rest.body;
+
+  const res = await fetch(url, {
     ...rest,
     headers: {
       "Content-Type": "application/json",
       ...headers,
     },
-    body: json ? JSON.stringify(json) : rest.body,
+    body,
     cache: "no-store",
   });
 
